@@ -18,9 +18,9 @@ public class FlareExecutor {
   protected static final String CONTENT_TYPE = "Content-Type";
   protected static final String SQ_CONTENT_TYPE = "application/sq+json";
 
-  String flareBaseUrl;
-  String basicAuthUser;
-  String basicAuthPw;
+  private final String flareBaseUrl;
+  private final String basicAuthUser;
+  private final String basicAuthPw;
 
   public FlareExecutor(String flareBaseUrl, String basicAuthUser, String basicAuthPw) {
     this.flareBaseUrl = flareBaseUrl;

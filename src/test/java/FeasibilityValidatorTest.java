@@ -10,6 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Objects;
+import org.aktin.broker.client2.validator.ValidationError;
 import org.junit.Test;
 
 public class FeasibilityValidatorTest {
@@ -45,7 +46,7 @@ public class FeasibilityValidatorTest {
   public void rejectInvalidCql() {
     String inputString = "Invalid CQL";
 
-    assertThrows(IOException.class, () -> cqlValidator.validate(
+    assertThrows(ValidationError.class, () -> cqlValidator.validate(
         new ByteArrayInputStream(inputString.getBytes(
             StandardCharsets.UTF_8))));
   }
@@ -69,7 +70,7 @@ public class FeasibilityValidatorTest {
       assertThrows(IOException.class, () -> sqValidator.validate(
           new ByteArrayInputStream(inputString.getBytes(
               StandardCharsets.UTF_8))));
-      assertThrows(IOException.class, () -> cqlValidator.validate(
+      assertThrows(ValidationError.class, () -> cqlValidator.validate(
           new ByteArrayInputStream(inputString.getBytes(
               StandardCharsets.UTF_8))));
     }

@@ -12,24 +12,25 @@ import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Library;
 import org.hl7.fhir.r4.model.Measure;
 
-public class FhirHelper {
+public record FhirHelper(FhirContext context) {
 
-  private final FhirContext context;
   private static final String CQL_MEDIA_TYPE = "text/cql";
-
-  public FhirHelper(FhirContext context) {
-    this.context = context;
-  }
 
 
   /**
-   * Create a {@link Bundle} with predefined library and measure URI, as well as CQL String
-   * @param cql the plaintext cql definition
-   * @param libraryUri a library uri {@link String} to be included in the {@link Bundle}
-   * @param measureUri a measure uri {@link String} to be included in the {@link Bundle}
-   * @return the {@link Bundle}, consisting of a {@link Library} and {@link Measure}, containing the submitted values
+   * Create a {@link Bundle} with predefined library and measure URI, as well as
+   * CQL String
+   *
+   * @param cql        the plaintext cql definition
+   * @param libraryUri a library uri {@link String} to be included in the {@link
+   *                   Bundle}
+   * @param measureUri a measure uri {@link String} to be included in the {@link
+   *                   Bundle}
+   * @return the {@link Bundle}, consisting of a {@link Library} and {@link
+   * Measure}, containing the submitted values
    */
-  public Bundle createBundle(String cql, String libraryUri, String measureUri) throws IOException {
+  public Bundle createBundle(String cql, String libraryUri, String measureUri)
+      throws IOException {
     var library = appendCql(parseResource(Library.class,
         getResourceFileAsString("Library.json")).setUrl(libraryUri), cql);
     var measure = parseResource(Measure.class,
@@ -41,20 +42,24 @@ public class FhirHelper {
 
   /**
    * Parse a String as an {@link IBaseResource} implementation
-   * @param type the concrete {@link IBaseResource} implementation class to parse to
+   *
+   * @param type  the concrete {@link IBaseResource} implementation class to
+   *              parse to
    * @param input the {@link String} to parse
+   * @param <T>   any implementation of {@link IBaseResource}
    * @return the wanted {@link IBaseResource} implementation object
-   * @param <T> any implementation of {@link IBaseResource}
    */
-  private <T extends IBaseResource> T parseResource(Class<T> type, String input) {
+  private <T extends IBaseResource> T parseResource(Class<T> type,
+      String input) {
     var parser = context.newJsonParser();
     return type.cast(parser.parseResource(input));
   }
 
   /**
    * Add the CQL query to a {@link Library}
+   *
    * @param library the {@link Library} to add the CQL string to
-   * @param cql the CQL string to add
+   * @param cql     the CQL string to add
    * @return the {@link Library} with the added CQL
    */
   private static Library appendCql(Library library, String cql) {
@@ -65,24 +70,31 @@ public class FhirHelper {
 
   /**
    * Create a {@link Bundle} of a {@link Library} and a {@link Measure}
+   *
    * @param library the {@link Library} to add to the {@link Bundle}
    * @param measure the {@link Measure} to add to the {@link Bundle}
-   * @return the {@link Bundle}, consisting of the given {@link Library} and {@link Measure}
+   * @return the {@link Bundle}, consisting of the given {@link Library} and
+   * {@link Measure}
    */
-  private static Bundle bundleLibraryAndMeasure(Library library, Measure measure) {
+  private static Bundle bundleLibraryAndMeasure(Library library,
+      Measure measure) {
     var bundle = new Bundle();
     bundle.setType(TRANSACTION);
-    bundle.addEntry().setResource(library).getRequest().setMethod(POST).setUrl("Library");
-    bundle.addEntry().setResource(measure).getRequest().setMethod(POST).setUrl("Measure");
+    bundle.addEntry().setResource(library).getRequest().setMethod(POST)
+        .setUrl("Library");
+    bundle.addEntry().setResource(measure).getRequest().setMethod(POST)
+        .setUrl("Measure");
     return bundle;
   }
 
   /**
    * Read file contents as String
+   *
    * @param fileName name of the resource file
    * @return the String contents of the file
    */
-  public static String getResourceFileAsString(String fileName) throws IOException {
+  public static String getResourceFileAsString(String fileName)
+      throws IOException {
     InputStream is = getResourceFileAsInputStream(fileName);
     if (is != null) {
       return new String(is.readAllBytes(), UTF_8);
@@ -93,6 +105,7 @@ public class FhirHelper {
 
   /**
    * Read file contents as {@link InputStream}
+   *
    * @param fileName name of the resource file
    * @return an {@link InputStream} of the file
    */

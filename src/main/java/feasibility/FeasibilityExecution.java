@@ -13,7 +13,7 @@ import org.aktin.broker.client2.validator.ValidationError;
 
 @Log
 public class FeasibilityExecution extends AbortableRequestExecution {
-	private FeasibilityExecutionPlugin config;
+	private final FeasibilityExecutionPlugin config;
 	private String requestBody;
 	private String responseBody;
 
@@ -32,7 +32,8 @@ public class FeasibilityExecution extends AbortableRequestExecution {
 		if( validator != null ) {
 			try {
 				validator.getValidator(config.getRequestMediatype()).validate(new ByteArrayInputStream(body.getBytes(StandardCharsets.UTF_8)));
-			} catch (ValidationError e) {
+			} catch (Exception e) {
+				this.responseBody = "{\"Request failed validation\"}";
 				throw new IOException("Invalid request syntax", e);
 			}
 		}

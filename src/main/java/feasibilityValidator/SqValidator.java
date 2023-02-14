@@ -16,8 +16,8 @@ import org.json.JSONTokener;
 public class SqValidator implements RequestValidator {
 
 
-  private Constructor<?> jsonObjectConstructor;
-  private Charset defaultCharset;
+  private final Constructor<?> jsonObjectConstructor;
+  private final Charset defaultCharset;
 
   public SqValidator() throws ClassNotFoundException, NoSuchMethodException {
     Class<?> jsonObjectClass = Class.forName("org.json.JSONObject");
@@ -40,9 +40,7 @@ public class SqValidator implements RequestValidator {
 
       JSONObject sq_object = new JSONObject(sq_input);
 
-      // validation successful. input parsed as JSON array.
       var jsonSchema = new JSONObject(new JSONTokener(slurp("/Users/juliangruendner/phd/code/mii-feasibility/feasibility-aktin/src/test/resources/sq-schema.json")));
-
 
       SchemaLoader loader = SchemaLoader.builder()
           .schemaJson(jsonSchema)
@@ -55,7 +53,6 @@ public class SqValidator implements RequestValidator {
       return;
     } catch (Exception e) {
       if( e.getClass().getName().equals("org.json.JSONException") ) {
-        // validation failed, try parsing JSON array
         throw new ValidationError(e);
       }
       else if (e.getClass().getName().equals("org.everit.json.schema.ValidationException")){

@@ -12,7 +12,8 @@ import org.cqframework.cql.cql2elm.quick.FhirLibrarySourceProvider;
 
 public class CqlValidator implements RequestValidator {
 
-  public void validate(InputStream inputStream) throws IOException {
+  public void validate(InputStream inputStream)
+      throws IOException, ValidationError {
 
     String cqlString = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
 
@@ -23,7 +24,7 @@ public class CqlValidator implements RequestValidator {
     if  (! CqlTranslator
          .fromText(cqlString, modelManager , libraryManager)
          .getErrors().isEmpty()){
-        throw new IOException("CQL validation failed");
+        throw new ValidationError(new Exception("CQL validation failed"));
     }
 
   }
