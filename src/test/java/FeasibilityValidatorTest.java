@@ -1,3 +1,4 @@
+import feasibilityValidator.CqlValidator;
 import feasibilityValidator.SqValidator;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -15,6 +16,13 @@ import org.junit.Test;
 
 public class FeasibilityValidatorTest {
 
+  SqValidator sqValidator = new SqValidator();
+  CqlValidator cqlValidator = new CqlValidator();
+
+  public FeasibilityValidatorTest()
+      throws ClassNotFoundException, NoSuchMethodException {
+  }
+
   private static Path resourcePath(String name) throws URISyntaxException {
     return Paths.get(
         Objects.requireNonNull(FeasibilityValidatorTest.class.getResource(name)).toURI());
@@ -26,10 +34,21 @@ public class FeasibilityValidatorTest {
 
 
   @Test
-  public void acceptValidSq()
+  public void acceptValidCql()
       throws Exception {
 
-    SqValidator sqValidator = new SqValidator();
+    String inputString = slurp("example-cql");
+
+    assertDoesNotThrow(() -> cqlValidator.validate(
+        new ByteArrayInputStream(inputString.getBytes(
+            StandardCharsets.UTF_8))));
+
+  }
+
+
+  @Test
+  public void acceptValidSq()
+      throws Exception {
 
     String sqInputString = slurp("example-sq.json");
 
