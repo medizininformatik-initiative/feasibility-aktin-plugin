@@ -4,47 +4,12 @@ import org.junit.Test;
 public class FeasibilityExecutionTest {
 
 
-
   @Test
   public void simpleTest(){
 
-    System.out.println(exampleSq);
+    System.out.println(exampleCql);
 
   }
-  String exampleSq = "{\n"
-      + "  \"version\": \"http://to_be_decided.com/draft-1/schema#\",\n"
-      + "  \"inclusionCriteria\": [\n"
-      + "    [\n"
-      + "      {\n"
-      + "        \"termCodes\": [\n"
-      + "          {\n"
-      + "            \"code\": \"gender\",\n"
-      + "            \"system\": \"mii.abide\",\n"
-      + "            \"display\": \"Geschlecht\"\n"
-      + "          }\n"
-      + "        ],\n"
-      + "        \"attributeFilters\": [\n"
-      + "          {\n"
-      + "            \"type\": \"concept\",\n"
-      + "            \"selectedConcepts\": [\n"
-      + "              {\n"
-      + "                \"code\": \"female\",\n"
-      + "                \"system\": \"http://hl7.org/fhir/administrative-gender\",\n"
-      + "                \"display\": \"Female\"\n"
-      + "              }\n"
-      + "            ],\n"
-      + "            \"attributeCode\": {\n"
-      + "              \"code\": \"gender\",\n"
-      + "              \"system\": \"mii.abide\",\n"
-      + "              \"display\": \"Geschlecht\"\n"
-      + "            }\n"
-      + "          }\n"
-      + "        ]\n"
-      + "      }\n"
-      + "    ]\n"
-      + "  ]\n"
-      + "}";
-
 
     String exampleCql = """
         library Retrieve

@@ -12,7 +12,6 @@ public class CqlExecutor {
   protected static final String CONTENT_TYPE = "Content-Type";
   protected static final String SQ_CONTENT_TYPE = "application/sq+json";
 
-  String fhirBaseUrl;
   FhirHelper fhirHelper;
   FhirConnector fhirConnector;
 
@@ -21,11 +20,12 @@ public class CqlExecutor {
     this.fhirHelper = fhirHelper;
   }
 
-  public String evaluateCql(String cql) throws IOException {
+  public int evaluateCql(String cql) throws IOException {
 
     var libraryUri = "urn:uuid" + UUID.randomUUID();
     var measureUri = "urn:uuid" + UUID.randomUUID();
     MeasureReport measureReport;
+
     try {
       Bundle bundle = fhirHelper.createBundle(cql, libraryUri, measureUri);
       fhirConnector.transmitBundle(bundle);
@@ -35,8 +35,7 @@ public class CqlExecutor {
     }
 
     var resultCount = measureReport.getGroupFirstRep().getPopulationFirstRep().getCount();
-    resultCount = ResultObfuscator.obfuscateResult(resultCount);
-    return String.valueOf(resultCount);
+    return resultCount;
   }
 
 }

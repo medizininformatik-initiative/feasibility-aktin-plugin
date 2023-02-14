@@ -46,11 +46,12 @@ public class FeasibilityExecution extends AbortableRequestExecution {
 		int resultInt = 0;
 
 		if (config.getRequestMediatype().equals("text/cql")){
-			log.info("Executing feasibility query via Cql");
-			String sqEvalResult = config.getCqlExecutor().evaluateCql(requestBody);
-			resultInt = Integer.parseInt(sqEvalResult);
+			log.info("Evaluating CQL against FHIR server, CQL evaluated is");
+			log.info(requestBody);
+			resultInt = config.getCqlExecutor().evaluateCql(requestBody);
 		} else if (config.getRequestMediatype().equals("application/sq+json")){
-			log.info("Executing feasibility query via flare");
+			log.info("Evaluating SQ with FLARE, SQ evaluated is");
+			log.info(requestBody);
 			String sqEvalResult = config.getFlareExecutor().evaluateSq(requestBody);
 			resultInt = Integer.parseInt(sqEvalResult);
 		}
