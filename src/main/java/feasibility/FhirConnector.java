@@ -11,7 +11,13 @@ import org.hl7.fhir.r4.model.MeasureReport;
 import org.hl7.fhir.r4.model.Parameters;
 
 
-public record FhirConnector(IGenericClient client) {
+public class FhirConnector {
+
+  IGenericClient client;
+
+  public FhirConnector(IGenericClient client){
+    this.client = client;
+  }
 
   /**
    * Submit a {@link Bundle} to the FHIR server.

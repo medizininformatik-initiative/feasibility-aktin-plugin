@@ -12,9 +12,15 @@ import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Library;
 import org.hl7.fhir.r4.model.Measure;
 
-public record FhirHelper(FhirContext context) {
+public class FhirHelper {
 
   private static final String CQL_MEDIA_TYPE = "text/cql";
+
+  FhirContext context;
+
+  FhirHelper(FhirContext context){
+    this.context = context;
+  }
 
 
   /**

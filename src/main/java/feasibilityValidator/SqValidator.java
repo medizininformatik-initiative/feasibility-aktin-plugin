@@ -1,5 +1,6 @@
 package feasibilityValidator;
 
+import feasibility.CqlExecutor;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
@@ -40,7 +41,9 @@ public class SqValidator implements RequestValidator {
 
       JSONObject sq_object = new JSONObject(sq_input);
 
-      var jsonSchema = new JSONObject(new JSONTokener(slurp("/Users/juliangruendner/phd/code/mii-feasibility/feasibility-aktin/src/test/resources/sq-schema.json")));
+      InputStream schemaIn =  SqValidator.class.getResourceAsStream("sq-schema.json");
+
+      var jsonSchema = new JSONObject(new JSONTokener(schemaIn));
 
       SchemaLoader loader = SchemaLoader.builder()
           .schemaJson(jsonSchema)
