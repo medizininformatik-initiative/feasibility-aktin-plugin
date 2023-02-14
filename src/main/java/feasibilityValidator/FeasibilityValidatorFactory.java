@@ -7,6 +7,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import jdk.jshell.spi.ExecutionControl.NotImplementedException;
 import lombok.SneakyThrows;
 import org.aktin.broker.client2.validator.RequestValidator;
 import org.aktin.broker.client2.validator.RequestValidatorFactory;
@@ -35,8 +36,8 @@ public class FeasibilityValidatorFactory implements RequestValidatorFactory, Req
   }
 
   @Override
-  public void validate(InputStream in) throws IOException, ValidationError {
-
+  public void validate(InputStream in) throws IOException {
+    throw new IOException("Validation of factory not implemented");
   }
 
 }
