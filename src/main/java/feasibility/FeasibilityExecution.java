@@ -44,20 +44,20 @@ public class FeasibilityExecution extends AbortableRequestExecution {
 	@Override
 	protected void doExecution() throws IOException {
 
-		int resultInt = 0;
+		long result = 0;
 
 		if (config.getRequestMediatype().equals("text/cql")){
 			log.info("Evaluating CQL against FHIR server, CQL evaluated is");
 			log.info(requestBody);
-			resultInt = config.getCqlExecutor().evaluateCql(requestBody);
+			result = config.getCqlExecutor().evaluateCql(requestBody);
 		} else if (config.getRequestMediatype().equals("application/sq+json")){
 			log.info("Evaluating SQ with FLARE, SQ evaluated is");
 			log.info(requestBody);
 			String sqEvalResult = config.getFlareExecutor().evaluateSq(requestBody);
-			resultInt = Integer.parseInt(sqEvalResult);
+			result = Long.parseLong(sqEvalResult);
 		}
 
-		int obfuscatedResult = ResultObfuscator.obfuscateResult(resultInt);
+		long obfuscatedResult = ResultObfuscator.obfuscateResult(result);
 		log.info("Obfuscated SQ Result = " + obfuscatedResult);
 		this.responseBody = String.valueOf(obfuscatedResult);
 
