@@ -9,17 +9,18 @@ import java.nio.charset.StandardCharsets;
 import lombok.extern.java.Log;
 import org.aktin.broker.client.live.AbortableRequestExecution;
 import org.aktin.broker.client2.validator.RequestValidatorFactory;
-import org.aktin.broker.client2.validator.ValidationError;
 
 @Log
 public class FeasibilityExecution extends AbortableRequestExecution {
 	private final FeasibilityExecutionPlugin config;
 	private String requestBody;
 	private String responseBody;
+	private final ResultObfuscator resultObfuscator;
 
 	public FeasibilityExecution(int requestId, FeasibilityExecutionPlugin config) {
 		super(requestId);
 		this.config = config;
+		this.resultObfuscator = config.getResultObfuscator();
 	}
 
 	@Override
@@ -47,18 +48,18 @@ public class FeasibilityExecution extends AbortableRequestExecution {
 		long result = 0;
 
 		if (config.getRequestMediatype().equals("text/cql")){
-			log.info("Evaluating CQL against FHIR server, CQL evaluated is");
-			log.info(requestBody);
+			log.finer("Evaluating CQL against FHIR server, CQL evaluated is");
+			log.finer(requestBody);
 			result = config.getCqlExecutor().evaluateCql(requestBody);
 		} else if (config.getRequestMediatype().equals("application/sq+json")){
-			log.info("Evaluating SQ with FLARE, SQ evaluated is");
-			log.info(requestBody);
+			log.finer("Evaluating SQ with FLARE, SQ evaluated is");
+			log.finer(requestBody);
 			String sqEvalResult = config.getFlareExecutor().evaluateSq(requestBody);
 			result = Long.parseLong(sqEvalResult);
 		}
 
-		long obfuscatedResult = ResultObfuscator.obfuscateResult(result);
-		log.info("Obfuscated SQ Result = " + obfuscatedResult);
+		long obfuscatedResult = resultObfuscator.obfuscateResult(result);
+		log.finer("Obfuscated SQ Result = " + obfuscatedResult);
 		this.responseBody = String.valueOf(obfuscatedResult);
 
 	}

@@ -18,6 +18,7 @@ public class FeasibilityExecutionPlugin extends CLIClientPluginConfiguration<Fea
 	private RequestValidatorFactory requestValidation;
 	private FlareExecutor flareExecutor;
 	private CqlExecutor cqlExecutor;
+	protected ResultObfuscator resultObfuscator;
 
 	public FeasibilityExecutionPlugin(InputStream in) throws IOException {
 		super(in);
@@ -26,6 +27,8 @@ public class FeasibilityExecutionPlugin extends CLIClientPluginConfiguration<Fea
 	@Override
 	protected void loadConfig(Properties properties) throws IOException{
 		// load any extra configuration parameters here.
+
+		this.resultObfuscator = new ResultObfuscator(1,0.5);
 
 		String flareBaseUrl = properties.getProperty("plugin.feasibility.flare.url");
 		String fhirBaseUrl = properties.getProperty("plugin.feasibility.cql.fhirbaseurl");

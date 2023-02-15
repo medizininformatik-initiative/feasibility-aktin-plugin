@@ -19,7 +19,7 @@ public class SamplyLaplace {
      * @return the permuted value
      */
     public static long privatize(long value, double obfuscationNum) {
-        return Math.round((value + obfuscationNum) / 10) * 10;
+        return Math.max(0,Math.round((value + obfuscationNum) / 10) * 10);
     }
 
     /**

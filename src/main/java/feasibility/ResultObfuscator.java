@@ -1,26 +1,31 @@
 package feasibility;
 
+import com.github.benmanes.caffeine.cache.Caffeine;
+import com.github.benmanes.caffeine.cache.LoadingCache;
 import java.security.SecureRandom;
-import java.util.HashMap;
+
 
 public class ResultObfuscator {
 
-  private static HashMap<Long, Double> obfuscationNumMap = new HashMap();
-  private static double sensitivity = 1;
-  private static double epsilon = 0.5;
+  private final LoadingCache<Long, Long> cache;
+  private double sensitivity = 1;
+  private double epsilon = 0.5;
 
-  public static long obfuscateResult(Long result){
 
-    Double obfuscationNum = obfuscationNumMap.get(result);
+  public ResultObfuscator(double sensitivity, double epsilon){
 
-    if (obfuscationNum == null){
-        obfuscationNum = SamplyLaplace.laplace(0, sensitivity, epsilon, new SecureRandom());
-    }
+    this.sensitivity = sensitivity;
+    this.epsilon = epsilon;
+    this.cache = Caffeine.newBuilder()
+        .build(key -> load(key));
+  }
 
-    obfuscationNumMap.put(result, obfuscationNum);
+  private Long load(Long key){
+    return SamplyLaplace.privatize(key, SamplyLaplace.laplace(0, sensitivity, epsilon, new SecureRandom()));
+  }
 
-    return SamplyLaplace.privatize(result, obfuscationNum);
-
+  public long obfuscateResult(Long result){
+    return cache.get(result);
   }
 
 }
