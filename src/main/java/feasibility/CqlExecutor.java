@@ -26,5 +26,4 @@ public class CqlExecutor {
 
     return measureReport.getGroupFirstRep().getPopulationFirstRep().getCount();
   }
-
 }

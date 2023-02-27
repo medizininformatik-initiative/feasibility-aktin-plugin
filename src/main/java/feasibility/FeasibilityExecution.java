@@ -45,7 +45,7 @@ public class FeasibilityExecution extends AbortableRequestExecution {
 	@Override
 	protected void doExecution() throws IOException {
 
-		long result = 0;
+		var result = 0L;
 
 		if (config.getRequestMediatype().equals("text/cql")){
 			log.finer("Evaluating CQL against FHIR server, CQL evaluated is");
@@ -58,7 +58,7 @@ public class FeasibilityExecution extends AbortableRequestExecution {
 			result = Long.parseLong(sqEvalResult);
 		}
 
-		long obfuscatedResult = resultObfuscator.obfuscateResult(result);
+		var obfuscatedResult = resultObfuscator.obfuscateResult(result);
 		log.finer("Obfuscated SQ Result = " + obfuscatedResult);
 		this.responseBody = String.valueOf(obfuscatedResult);
 

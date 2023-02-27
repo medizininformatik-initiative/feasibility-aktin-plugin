@@ -28,7 +28,7 @@ public class FeasibilityExecutionPlugin extends CLIClientPluginConfiguration<Fea
 	protected void loadConfig(Properties properties) throws IOException{
 		// load any extra configuration parameters here.
 
-		this.resultObfuscator = new ResultObfuscator(1,0.5);
+		this.resultObfuscator = new FeasibilityCountObfuscator();
 
 		String flareBaseUrl = properties.getProperty("plugin.feasibility.flare.url");
 		String fhirBaseUrl = properties.getProperty("plugin.feasibility.cql.fhirbaseurl");

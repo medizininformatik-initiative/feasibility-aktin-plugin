@@ -2,7 +2,6 @@ version: '3.7'
 services:
   aktin-client:
     build: .
-    #entrypoint: sh -c "tail -f /dev/null"
     environment:
       BROKER_REQUEST_MEDIATYPE: ${BROKER_REQUEST_MEDIATYPE:-text}
       BROKER_RESULT_MEDIATYPE: ${BROKER_RESULT_MEDIATYPE:-application/json}
@@ -23,4 +22,3 @@ services:
       FLARE_URL: ${FLARE_URL}
       FLARE_USER: ${FLARE_USER}
       FLARE_PW: ${FLARE_PW}
-

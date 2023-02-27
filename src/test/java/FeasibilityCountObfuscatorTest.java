@@ -1,20 +1,18 @@
-
 import static org.junit.Assert.assertTrue;
 
-import feasibility.CachingLaplaceCountObfuscator;
-import feasibility.ResultObfuscator;
+import feasibility.FeasibilityCountObfuscator;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.BeforeEach;
 
-public class ResultObfuscatorTest {
+public class FeasibilityCountObfuscatorTest {
 
 
-  ResultObfuscator resultObfuscator;
+  FeasibilityCountObfuscator resultObfuscator;
 
   @BeforeEach
   public void setUp() {
-    this.resultObfuscator = new CachingLaplaceCountObfuscator(1, 0.5);
+    this.resultObfuscator = new FeasibilityCountObfuscator();
   }
 
   @Test
@@ -24,7 +22,11 @@ public class ResultObfuscatorTest {
 
     Long resultsToObfuscate[] = {0L, 1L, 2L, 3L, 4L, 5L, 6L, 7L, 1823L, 123L, 1321L,12321L};
 
-      System.out.println(resultObfuscator.obfuscateResult(resultsToObfuscate[0]));
+    for(Long result: resultsToObfuscate){
+      System.out.println(result + "|" + resultObfuscator.obfuscateResult(result));
+    }
+
+
   }
 
   @RepeatedTest(1000)
@@ -32,7 +34,7 @@ public class ResultObfuscatorTest {
     long leftLimit = 0L;
     long rightLimit = 10L;
     long generatedLong =  leftLimit + (long) (Math.random() * (rightLimit - leftLimit));
-    assertTrue(0 <= (long) resultObfuscator.obfuscateResult(Long.valueOf(generatedLong)));
+    assertTrue(0 <= resultObfuscator.obfuscateResult(Long.valueOf(generatedLong)));
   }
 
 

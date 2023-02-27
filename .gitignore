@@ -43,3 +43,6 @@ mvnw.cmd
 
 ### GoogeCodingStyle ###
 googleCodeStyle.xml
+
+docker/aktin-client/libs
+docker/atkin-client/*.jar
