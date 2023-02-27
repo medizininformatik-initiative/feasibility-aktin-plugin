@@ -1,7 +1,9 @@
 version: '3.7'
 services:
   aktin-client:
-    build: .
+    build:
+      context: ../..
+      dockerfile: docker/aktin-client/Dockerfile
     environment:
       BROKER_REQUEST_MEDIATYPE: ${BROKER_REQUEST_MEDIATYPE:-text}
       BROKER_RESULT_MEDIATYPE: ${BROKER_RESULT_MEDIATYPE:-application/json}

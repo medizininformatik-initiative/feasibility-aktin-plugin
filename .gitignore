@@ -45,4 +45,3 @@ mvnw.cmd
 googleCodeStyle.xml
 
 docker/aktin-client/libs
-docker/atkin-client/*.jar
