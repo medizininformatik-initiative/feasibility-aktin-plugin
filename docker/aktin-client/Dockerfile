@@ -13,6 +13,7 @@ COPY --from=MAVEN_TOOL_CHAIN /tmp/target/*.jar ./lib/
 COPY --from=MAVEN_TOOL_CHAIN /tmp/target/lib ./lib/
 COPY docker/aktin-client/run_client.sh ./run_client.sh
 COPY docker/aktin-client/sysproc.properties ./sysproc.properties
+COPY docker/aktin-client/logging.properties ./logging.properties
 RUN chmod 644 run_client.sh
 RUN chown -R 10001:10001 /opt/aktin
 USER 10001

@@ -48,18 +48,18 @@ public class FeasibilityExecution extends AbortableRequestExecution {
 		var result = 0L;
 
 		if (config.getRequestMediatype().equals("text/cql")){
-			log.finer("Evaluating CQL against FHIR server, CQL evaluated is");
-			log.finer(requestBody);
+			log.fine("Evaluating CQL against FHIR server, CQL evaluated is:");
+			log.fine(requestBody.replace("\n", ""));
 			result = config.getCqlExecutor().evaluateCql(requestBody);
 		} else if (config.getRequestMediatype().equals("application/sq+json")){
-			log.finer("Evaluating SQ with FLARE, SQ evaluated is");
-			log.finer(requestBody);
+			log.fine("Evaluating SQ against FLARE, SQ evaluated is:");
+			log.fine(requestBody.replace("\n", "").replace(" ", ""));
 			String sqEvalResult = config.getFlareExecutor().evaluateSq(requestBody);
 			result = Long.parseLong(sqEvalResult);
 		}
 
 		var obfuscatedResult = resultObfuscator.obfuscateResult(result);
-		log.finer("Obfuscated SQ Result = " + obfuscatedResult);
+		log.finest("Obfuscated SQ Result = " + obfuscatedResult);
 		this.responseBody = String.valueOf(obfuscatedResult);
 
 	}
