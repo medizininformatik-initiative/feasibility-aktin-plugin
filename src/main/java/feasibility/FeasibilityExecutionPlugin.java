@@ -26,21 +26,16 @@ public class FeasibilityExecutionPlugin extends CLIClientPluginConfiguration<Fea
 
 	@Override
 	protected void loadConfig(Properties properties) throws IOException{
-		// load any extra configuration parameters here.
 
 		this.resultObfuscator = new FeasibilityCountObfuscator();
-
 		String flareBaseUrl = properties.getProperty("plugin.feasibility.flare.url");
 		String fhirBaseUrl = properties.getProperty("plugin.feasibility.cql.fhirbaseurl");
-
 		this.requestValidation = loadValidatorFactory(properties);
 
 		// Set up FLARE execution
-
 		String flareAuthUser = properties.getProperty("plugin.feasibility.flare.user");
 		String flareAuthPw = properties.getProperty("plugin.feasibility.flare.pw");
 		this.flareExecutor = new FlareExecutor(flareBaseUrl, flareAuthUser, flareAuthPw);
-
 
 		// Set up CQL execution
 		FhirContext fhirContext = FhirContext.forR4();
@@ -58,7 +53,6 @@ public class FeasibilityExecutionPlugin extends CLIClientPluginConfiguration<Fea
 				new FhirConnector(fhirContext.newRestfulGenericClient(fhirBaseUrl)),
 				new FhirHelper(fhirContext)
 		);
-
 	}
 
 	@Override
