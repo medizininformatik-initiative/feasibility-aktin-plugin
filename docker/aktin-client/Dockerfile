@@ -5,7 +5,7 @@ WORKDIR /tmp/
 RUN mvn clean install
 
 
-FROM ghcr.io/juliangruendner/aktin-client:1.4.3
+FROM ghcr.io/aktin/aktin-client:1.4.0
 
 USER root
 WORKDIR /opt/aktin
