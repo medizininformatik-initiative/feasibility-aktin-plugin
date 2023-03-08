@@ -19,6 +19,7 @@ public class FeasibilityExecutionPlugin extends CLIClientPluginConfiguration<Fea
 	private FlareExecutor flareExecutor;
 	private CqlExecutor cqlExecutor;
 	protected ResultObfuscator resultObfuscator;
+	protected FeasibilityRateLimiter feasibilityRateLimiter;
 
 	public FeasibilityExecutionPlugin(InputStream in) throws IOException {
 		super(in);
@@ -28,17 +29,20 @@ public class FeasibilityExecutionPlugin extends CLIClientPluginConfiguration<Fea
 	protected void loadConfig(Properties properties) throws IOException{
 
 		this.resultObfuscator = new FeasibilityCountObfuscator();
-		String flareBaseUrl = properties.getProperty("plugin.feasibility.flare.url");
-		String fhirBaseUrl = properties.getProperty("plugin.feasibility.cql.fhirbaseurl");
 		this.requestValidation = loadValidatorFactory(properties);
 
+		int maxRequests = Integer.valueOf(properties.getProperty("plugin.feasibility.ratelimit.nmaxrequests"));
+		int resetTimeMinutes = Integer.valueOf(properties.getProperty("plugin.feasibility.ratelimit.resettimeminutes"));
+		this.feasibilityRateLimiter = new FeasibilityRateLimiter(maxRequests, resetTimeMinutes);
 		// Set up FLARE execution
+		String flareBaseUrl = properties.getProperty("plugin.feasibility.flare.url");
 		String flareAuthUser = properties.getProperty("plugin.feasibility.flare.user");
 		String flareAuthPw = properties.getProperty("plugin.feasibility.flare.pw");
 		this.flareExecutor = new FlareExecutor(flareBaseUrl, flareAuthUser, flareAuthPw);
 
 		// Set up CQL execution
 		FhirContext fhirContext = FhirContext.forR4();
+		String fhirBaseUrl = properties.getProperty("plugin.feasibility.cql.fhirbaseurl");
 		IGenericClient genFhirClient = fhirContext.newRestfulGenericClient(fhirBaseUrl);
 
 		String fhirUserCql = properties.getProperty("plugin.feasibility.cql.fhiruser");
