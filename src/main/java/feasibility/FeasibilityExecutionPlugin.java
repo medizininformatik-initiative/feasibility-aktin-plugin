@@ -27,7 +27,8 @@ public class FeasibilityExecutionPlugin extends CLIClientPluginConfiguration<Fea
 	@Override
 	protected void loadConfig(Properties properties) throws IOException{
 
-		this.resultObfuscator = new FeasibilityCountObfuscator();
+		var resultObfuscatorEpsilon = Double.valueOf(properties.getProperty("plugin.feasibility.obfuscator.epsilon"));
+		this.resultObfuscator = new CachingLaplaceCountObfuscator(1,resultObfuscatorEpsilon);
 		String flareBaseUrl = properties.getProperty("plugin.feasibility.flare.url");
 		String fhirBaseUrl = properties.getProperty("plugin.feasibility.cql.fhirbaseurl");
 		this.requestValidation = loadValidatorFactory(properties);

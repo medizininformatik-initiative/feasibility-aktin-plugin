@@ -8,12 +8,11 @@ import java.security.SecureRandom;
 public class CachingLaplaceCountObfuscator implements ResultObfuscator<Long> {
 
   private final LoadingCache<Long, Long> cache;
-  private double sensitivity = 1;
-  private double epsilon = 0.5;
+  private double sensitivity;
+  private double epsilon;
 
 
   public CachingLaplaceCountObfuscator(double sensitivity, double epsilon){
-
     this.sensitivity = sensitivity;
     this.epsilon = epsilon;
     this.cache = Caffeine.newBuilder()
