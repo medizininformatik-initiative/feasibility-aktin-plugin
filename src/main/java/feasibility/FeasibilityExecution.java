@@ -16,15 +16,22 @@ public class FeasibilityExecution extends AbortableRequestExecution {
 	private String requestBody;
 	private String responseBody;
 	private final ResultObfuscator resultObfuscator;
+	private FeasibilityRateLimiter rateLimiter;
 
 	public FeasibilityExecution(int requestId, FeasibilityExecutionPlugin config) {
 		super(requestId);
 		this.config = config;
 		this.resultObfuscator = config.getResultObfuscator();
+		this.rateLimiter = this.config.feasibilityRateLimiter;
 	}
 
 	@Override
 	protected void prepareExecution() throws IOException {
+
+		if (rateLimiter.limitRequests()){
+			this.responseBody = "{\"Too many Requests - rejecting request\"}";
+			throw new IOException("Too many requests - rejecting all future requests - Restart application to reset");
+		}
 		
 		HttpResponse<String> def = client.getMyRequestDefinition(requestId, config.getRequestMediatype(), BodyHandlers.ofString());
 		String body = def.body();

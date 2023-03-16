@@ -2,10 +2,8 @@ package feasibility;
 
 import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpClient.Version;
-import java.net.http.HttpHeaders;
 import java.net.http.HttpRequest;
 import java.net.http.HttpRequest.BodyPublishers;
 import java.net.http.HttpResponse;
@@ -47,7 +45,6 @@ public class FlareExecutor {
       HttpResponse flareResult = httpClient.send(sqRequest, BodyHandlers.ofString());
 
       return flareResult.body().toString();
-
     } catch (Exception e) {
       throw new IOException("An error while evaluating sq on flare " , e);
     }
