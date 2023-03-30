@@ -53,8 +53,8 @@ jobs:
     - name: Prepare Version
       id: prep
       run: |
-        echo ::set-output name=repository::$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
-        echo ::set-output name=version::${GITHUB_REF#refs/tags/v}
+        echo "repository=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_OUTPUT"
+        echo "version=${GITHUB_REF#refs/tags/v}" >> "$GITHUB_OUTPUT"
 
     - name: Build and push docker image for aktin-broker
       uses: docker/build-push-action@v2
