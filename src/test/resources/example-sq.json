@@ -5,28 +5,21 @@
       {
         "termCodes": [
           {
-            "code": "gender",
-            "system": "mii.abide",
+            "code": "263495000",
+            "system": "http://snomed.info/sct",
             "display": "Geschlecht"
           }
         ],
-        "attributeFilters": [
-          {
-            "type": "concept",
-            "selectedConcepts": [
-              {
-                "code": "female",
-                "system": "http://hl7.org/fhir/administrative-gender",
-                "display": "Female"
-              }
-            ],
-            "attributeCode": {
-              "code": "gender",
-              "system": "mii.abide",
-              "display": "Geschlecht"
+        "valueFilter": {
+          "selectedConcepts": [
+            {
+              "code": "female",
+              "system": "http://hl7.org/fhir/administrative-gender",
+              "display": "Female"
             }
-          }
-        ]
+          ],
+          "type": "concept"
+        }
       }
     ]
   ]

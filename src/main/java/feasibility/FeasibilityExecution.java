@@ -50,30 +50,40 @@ public class FeasibilityExecution extends AbortableRequestExecution {
 	}
 
 	@Override
-	protected void doExecution() throws IOException {
+	protected void doExecution(){
 
 		var result = 0L;
 
-		if (config.getRequestMediatype().equals("text/cql")){
-			log.fine("Evaluating CQL against FHIR server, CQL evaluated is:");
-			log.fine(requestBody.replace("\n", ""));
-			result = config.getCqlExecutor().evaluateCql(requestBody);
-		} else if (config.getRequestMediatype().equals("application/sq+json")){
-			log.fine("Evaluating SQ against FLARE, SQ evaluated is:");
-			log.fine(requestBody.replace("\n", "").replace(" ", ""));
-			String sqEvalResult = config.getFlareExecutor().evaluateSq(requestBody);
-			result = Long.parseLong(sqEvalResult);
+		try {
+			if (config.getRequestMediatype().equals("text/cql")) {
+				log.fine("Evaluating CQL against FHIR server, CQL evaluated is:");
+				log.fine(requestBody.replace("\n", ""));
+				result = config.getCqlExecutor().evaluateCql(requestBody);
+			} else if (config.getRequestMediatype().equals("application/sq+json")) {
+				log.fine("Evaluating SQ against FLARE, SQ evaluated is:");
+				log.fine(requestBody.replace("\n", "").replace(" ", ""));
+				String sqEvalResult = config.getFlareExecutor().evaluateSq(requestBody);
+				result = Long.parseLong(sqEvalResult);
+			}
+
+			var obfuscatedResult = resultObfuscator.obfuscateResult(result);
+			log.finest("Obfuscated SQ Result = " + obfuscatedResult);
+			this.responseBody = String.valueOf(obfuscatedResult);
+
+		} catch (Throwable e){
+				this.cause = e;
 		}
-
-		var obfuscatedResult = resultObfuscator.obfuscateResult(result);
-		log.finest("Obfuscated SQ Result = " + obfuscatedResult);
-		this.responseBody = String.valueOf(obfuscatedResult);
-
 	}
 
 	@Override
 	protected void finishExecution() {
-		reportCompleted();
+		if ( getCause() != null ){
+			reportFailure("FDPGE01: Unexpected execution failure");
+		} else if ( this.responseBody == null ){
+			reportFailure("FDPGE02: No result available");
+		} else {
+			reportCompleted();
+		}
 	}
 
 	@Override
@@ -83,6 +93,11 @@ public class FeasibilityExecution extends AbortableRequestExecution {
 
 	@Override
 	protected InputStream getResultData() {
+
+		if (this.responseBody == null){
+			this.responseBody = "{\"Error during request execution\"}";
+		}
+
 		return new ByteArrayInputStream(this.responseBody.getBytes(StandardCharsets.UTF_8));
 	}
 
