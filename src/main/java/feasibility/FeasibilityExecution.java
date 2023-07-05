@@ -50,7 +50,7 @@ public class FeasibilityExecution extends AbortableRequestExecution {
 	}
 
 	@Override
-	protected void doExecution() throws IOException{
+	protected void doExecution(){
 
 		var result = 0L;
 
@@ -70,14 +70,20 @@ public class FeasibilityExecution extends AbortableRequestExecution {
 			log.finest("Obfuscated SQ Result = " + obfuscatedResult);
 			this.responseBody = String.valueOf(obfuscatedResult);
 
-		} catch (Exception e){
-			throw new IOException("Error executing the request", e);
+		} catch (Throwable e){
+				this.cause = e;
 		}
 	}
 
 	@Override
 	protected void finishExecution() {
-		reportCompleted();
+		if ( getCause() != null ){
+			reportFailure("FDPGE01: Unexpected execution failure");
+		} else if ( this.responseBody == null ){
+			reportFailure("FDPGE02: No result available");
+		} else {
+			reportCompleted();
+		}
 	}
 
 	@Override
@@ -87,9 +93,11 @@ public class FeasibilityExecution extends AbortableRequestExecution {
 
 	@Override
 	protected InputStream getResultData() {
+
 		if (this.responseBody == null){
 			this.responseBody = "{\"Error during request execution\"}";
 		}
+
 		return new ByteArrayInputStream(this.responseBody.getBytes(StandardCharsets.UTF_8));
 	}
 
