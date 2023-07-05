@@ -29,9 +29,7 @@ public class FlareExecutor {
 
   HttpClient httpClient = HttpClient.newBuilder().version(Version.HTTP_1_1).build();
 
-  public String evaluateSq(String sq) throws IOException {
-
-    try {
+  public String evaluateSq(String sq) throws Exception {
 
       String valueToEncode = this.basicAuthUser + ":" + this.basicAuthPw;
       String authHeader =  "Basic " + Base64.getEncoder().encodeToString(valueToEncode.getBytes());
@@ -45,9 +43,7 @@ public class FlareExecutor {
       HttpResponse flareResult = httpClient.send(sqRequest, BodyHandlers.ofString());
 
       return flareResult.body().toString();
-    } catch (Exception e) {
-      throw new IOException("An error while evaluating sq on flare " , e);
-    }
+
   }
 
 }
