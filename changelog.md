@@ -1,5 +1,12 @@
 # Changelog
 
+## v1.6.0
+
+### Bugfixes
+
+* Fix websocket timeout - Update to base AKTIN Client 1.5.1 
+* Improve error handling ([#9](https://github.com/medizininformatik-initiative/feasibility-aktin-plugin/pull/9))
+
 ## v1.5.0
 
 Initial Version
