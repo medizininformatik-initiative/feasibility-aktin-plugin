@@ -48,11 +48,14 @@ public class FeasibilityExecutionPlugin extends CLIClientPluginConfiguration<Fea
 
 		String fhirUserCql = properties.getProperty("plugin.feasibility.cql.fhiruser");
 		String fhirPwCql = properties.getProperty("plugin.feasibility.cql.fhirpw");
+		int socketTimeout = Integer.valueOf(properties.getProperty("plugin.feasibility.cql.sockettimeout"));
 
 		if(! fhirUserCql.equals("") && ! fhirPwCql.equals("")) {
 			IClientInterceptor authInterceptor = new BasicAuthInterceptor(fhirUserCql, fhirPwCql);
 			genFhirClient.registerInterceptor(authInterceptor);
 		}
+
+		fhirContext.getRestfulClientFactory().setSocketTimeout(socketTimeout);
 
 		this.cqlExecutor = new CqlExecutor(
 				new FhirConnector(fhirContext.newRestfulGenericClient(fhirBaseUrl)),
