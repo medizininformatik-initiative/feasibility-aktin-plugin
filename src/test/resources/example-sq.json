@@ -3,19 +3,26 @@
   "inclusionCriteria": [
     [
       {
+        "attributeFilters": [],
         "termCodes": [
           {
             "code": "263495000",
-            "system": "http://snomed.info/sct",
-            "display": "Geschlecht"
+            "display": "Geschlecht",
+            "system": "http://snomed.info/sct"
           }
         ],
+        "context": {
+          "code": "Patient",
+          "display": "Patient",
+          "system": "fdpg.mii.cds",
+          "version": "1.0.0"
+        },
         "valueFilter": {
           "selectedConcepts": [
             {
-              "code": "female",
-              "system": "http://hl7.org/fhir/administrative-gender",
-              "display": "Female"
+              "code": "male",
+              "display": "Male",
+              "system": "http://hl7.org/fhir/administrative-gender"
             }
           ],
           "type": "concept"

@@ -1,6 +1,5 @@
 package feasibilityValidator;
 
-import feasibility.CqlExecutor;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
