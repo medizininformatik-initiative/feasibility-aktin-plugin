@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.0.0
+
+### Features
+
+* Make cql fhir client socket timeout configurable
+* Update SQ Schema to SQ v3
+
 ## v1.6.0
 
 ### Bugfixes
